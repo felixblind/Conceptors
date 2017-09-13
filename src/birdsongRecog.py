@@ -10,7 +10,7 @@ warnings.filterwarnings("ignore", category=np.VisibleDeprecationWarning)
 #%%
 
 # create list of syllables and initialize SongClassifier with it
-syllables = ['aa','ao','ba','bm','ca','ck','da','dl','ea','ej','fa','ff','ha','hk']
+syllables = ['aa', 'ao', 'ba', 'bm', 'ca', 'ck', 'da', 'dl', 'ea', 'ej', 'fa', 'ff', 'ha', 'hk']
 SC = SongClassifier(syllables)
 
 # define parameters of songClassifier

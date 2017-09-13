@@ -12,7 +12,7 @@ BIRDDB_FILE_BASE_URL = "http://taylor0.biology.ucla.edu/birdDBQuery/Files/"
 RECORDINGS_DIR = "recordings/"
 TEXTGRID_DIR = "textgrid_files/"
 
-CSV_INPUT_FILE = "BirdDB Query Results.csv"
+CSV_INPUT_FILE = "BirdDB_Query_Results.csv"
 CSV_WITH_FILENAMES = "birddb.csv"
 
 # Define main func so that all the helper functions can be
@@ -62,14 +62,14 @@ function main(args)
     writetable(CSV_WITH_FILENAMES, birddb_data)
 end
 
-function get_recording_filepaths(textgrid_filepathes::DataArrays.DataArray{UTF8String,1})
+function get_recording_filepaths(textgrid_filepathes::DataArrays.DataArray{String,1})
     # because the CSV only gives you the actual text and not the hyperlink
     # it doesn't contain the correct info to pull the recording file from
     # the server
     # but the textgrid path happens to almost match the recording path so
     # we'll use that instead
 
-    recording_array = Array{UTF8String, 1}()
+    recording_array = Array{String, 1}()
 
     # this could probably be parallel but I wasn't sure if order was gauranteed when
     # reducing with vcat
