@@ -1,6 +1,8 @@
 Pkg.add("DataFrames")
 Pkg.add("Requests")
 Pkg.add("ArgParse")
+Pkg.update()
+Pkg.build("MbedTLS")
 
 using DataFrames
 using Requests
