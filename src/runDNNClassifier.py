@@ -4,7 +4,11 @@ Created on Sat Jan 21 12:59:50 2017
 
 @author: rgast
 """
-
+"""
+This script writes results of a MLP runthrough (Performances and evidences) in a pickle file MLP_Results.pickle.
+@return: writes results of a MLP runthrough (Performances and evidences) in a pickle file MLP_Results.pickle
+@rtype: pickle file
+"""
 """ Libraries """
 
 from matplotlib.pyplot import *
@@ -48,6 +52,62 @@ def runDNN(path, syllN, trainN, cvalRuns, sampRate, interpolType, mfccN, invCoef
     """
     Function that runs syllable classification in a supervised manner using positive, negative and combined
     conceptors.
+
+    @type path: string
+    @param path: directory to the folder that includes syllable folders with wave data
+    @type syllN:
+    @param syllN:
+    @type trainN: integer
+    @param trainN: number of training samples to use for each syllable
+    @type cvalRuns: integer
+    @param cvalRuns: Number of cross validation runs with different training/test data splits
+    @type sampRate: integer
+    @param sampRate: Sampling Rate that raw data will be downsampled to
+    @type interpolType: string
+    @param interpolType: type of interpolation to be used for downsampling
+    @type mfccN: integer
+    @param mfccN: Number of mel frequency cepstral coefficients to extract for each mel frame
+    @type invCoeffOrder: boolean
+    @param invCoeffOrder: if true: Extract last n mfcc instead of first n
+    @type winsize: integer
+    @param winsize: Size of the time-window to be used for mfcc extraction in ms
+    @type melFramesN: integer
+    @param melFramesN: Desired number of time bins for mfcc data
+    @type smoothL: integer
+    @param smoothL: Desired length of the smoothed mfcc data
+    @type polyOrder: integer
+    @param polyOrder: Order of the polynomial used for mfcc data smoothing
+    @type incDer: List of 2 booleans
+    @param incDer: indicating whether to include 1./2. derivative of mfcc data or not
+    @type snr: float
+    @param snr: signal to noise ratio in the syllable data (if 0, no noise is added )
+    @type syllNames: List of strings
+    @param syllNames: List of names of specific syllables to be used
+    @type layerSizes: List of integers
+    @param layerSizes: 
+    @type activationFcts: List of strings
+    @param activationFcts: Activation function for units in each layer
+    @type dropouts: List of floats
+    @param dropouts: weight dropout probability for each layer
+    @type normalizations: List of ?
+    @param normalizations: indicates which normalization to add to layer activations
+    @type optimizer: string
+    @param optimizer: optimizer to use for gradient descent
+    @type learningRate: float
+    @param learningRate: the learning rate of the gradient descent optimizer
+    @type batchSize: integer
+    @param batchSize: batch size for each weight update
+    @type nEpochs: integer
+    @param nEpochs: how many times to go through all training data to train MLP
+    @type loss:
+    @param loss: 
+    @type validate_per_step: integer
+    @param validate_per_step: after how many training steps to evaluate performance on validation set
+    @type samplingSDs: List of floats
+    @param samplingSDs: standard deviation of gaussian from which initial weights are sampled
+    @rtype:
+    @return: 
+    
     """
     
     path = os.path.abspath(path)
