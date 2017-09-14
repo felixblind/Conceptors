@@ -29,8 +29,10 @@ class DeepNN:
             Initializes instance of DeepNN.
         
         :Input parameters:
-            input_dim:           Size of each input dimension (list)
-            output_dim:          Size of each output dimension (list)
+            @type input_dim:            list of integers
+            @param input_dim:           Size of each input dimension
+            @type output_dim:           list of integers
+            @param output_dim:          Size of each output dimension
             
         """
         
@@ -46,8 +48,10 @@ class DeepNN:
             Applies chosen activation function to given activation data.
             
         :Input parameters:
-            activations:            Activation data of certain layer (tensor)
-            activation_function:    type of activation function (string). Can be
+            @type activations:             tensor
+            @param activations:            Activation data of certain layer
+            @type activation_function:     string
+            @param activation_function:    type of activation function. Can be
                                         a) 'tanh'
                                         b) 'relu' for rectified linear unit
                                         c) 'softplus'
@@ -95,15 +99,27 @@ class DeepNN:
             Adds a layer to the network, including a weight tensor and an activation tensor.
             
         :Input parameters:
-            activation_function:    type of activation function to be applied to each unit (string)
-            include_bias:           if true, a column of ones will be added to the weights (boolean)
-            sd:                     standard deviation of the zero-mean gaussian from which the weights will be drawn (float)
-            dropout:                the chance with which each weight will be set to zero for a given training step (float)
-            normalization:          the type of normalization imposed on the layer activations. Can be
+            @type activation_function:     string
+            @param activation_function:    type of activation function to be applied to each unit. Can be
+                                        a) 'tanh'
+                                        b) 'relu' for rectified linear unit
+                                        c) 'softplus'
+                                        d) 'sigmoid'
+                                        e) 'softmax'
+                                        f) 'none'
+            @type include_bias:            boolean
+            @param include_bias:           if true, a column of ones will be added to the weights
+            @type sd:                      float
+            @param sd:                     standard deviation of the zero-mean gaussian from which the weights will be drawn
+            @type dropout:                 float
+            @param dropout:                the chance with which each weight will be set to zero for a given training step
+            @type normalization:           string
+            @param normalization:          the type of normalization imposed on the layer activations. Can be
                                         a) 'softmax' for softmax normalization
                                         b) 'Shift' for de-meaning
                                         c) 'ShiftScale' for de-meaning and standard deviation normalization
-            weights:                if provided, will be used as weights of layer instead of drawing from gaussian (tensor)
+            @type weights:                 tensor
+            @param weights:                if provided, will be used as weights of layer instead of drawing from gaussian
             
         """
         
@@ -159,37 +175,54 @@ class DeepNN:
             Trains the network by going through the training data in random mini-batches for multiple epochs.
             
         :Input parameters:
-            data:                       List including two entries, one with training and one with validation data
-            labels:                     List including two entries, one with training and one with validation labels corresponding to the data points in data
-            log_dir:                    Directory where summaries and checkpoints will be saved and retrieved from (string).
+            @param data:                       List including two entries, one with training and one with validation data
+            @param labels:                     List including two entries, one with training and one with validation labels corresponding to the data points in data
+            @type log_dir:                     string
+            @param log_dir:                    Directory where summaries and checkpoints will be saved and retrieved from.
                                         If None, current workding directory will be used.
-            loss_type:                  Type of loss that will be used to compute the gradient. Can be
+            @type loss_type:                   string
+            @param loss_type:                  Type of loss that will be used to compute the gradient. Can be
                                             a) 'MSL' for mean squared loss
                                             b) 'L2' for L2 norm loss
                                             c) 'CrossEntropy' for cross entropy loss of labels, where multiple classes can be present for a single data point
                                             d) 'CrossEntropyExclusive' for cross entropy of labels, where only a single class can be present at a time, but other classes can still have probability mass != 0
                                             e) 'CrossEntropyExclusiveSparse' for cross entropy of labels, where labels are expressed as indices for the class each data point belongs to
                                             f) 'Poisson' for data which can be expressed by a poisson distribution
-            optimizer_type:             Type of optimizer that will be used to minimize the loss. Can be
+            @type optimizer_type:              string
+            @param optimizer_type:             Type of optimizer that will be used to minimize the loss. Can be
                                             a) 'GradientDescent' for standard gradient descent that can be individualized by batch size, learning rate and momentum
                                             b) 'Adadelta' for Adadelta optimizer
                                             c) 'Adagrad' for Adagrad optimizer
                                             d) 'Adam' for Adam optimizer
                                             e) 'ProximalGradientDescent' for gradient descent with l1 and l2 normalization
-            learning_rate:              learning rate used for weight updates (float)
-            momentum:                   Momentum used for learning rate adaption (float)
-            n_epochs:                   Number of times to go through all training data in mini-batches (int)
-            batch_size:                 Size of random mini-batches to compute gradient for at each training step (int)
-            l1:                         Strength of l1 normalization for proximal gradient descent (float)
-            l2:                         Strength of l2 normalization for proximal gradient descent (float)
-            verbose:                    Indicates after how many training steps to print the current training loss (int)
-            check_dir:                  Sub-directory of log_dir to be used for checkpoint saving (string)
-            validate_per_step:          Indicates after how many training steps to evaluate classification performance on validation data (int)
-            plot_loss_step:             Indicates after how many training steps to plot classification performance (int)
-            plot_weights_step:          Indicates after how many training steps to plot weights of target layer (int)
-            plot_weights_layer:         Indicates for which layer to plot weights (int)
-            plot_weights_shape:         Indicates in which shape to bring weights before plotting them (list)
-            plot_weights_bias:          If true, remove weight for bias before plotting weights (boolean)
+            @type learning_rate:               float
+            @param learning_rate:              learning rate used for weight updates
+            @type momentum:                    float
+            @param momentum:                   Momentum used for learning rate adaption
+            @type n_epochs:                    integer
+            @param n_epochs:                   Number of times to go through all training data in mini-batches
+            @type batch_size:                  integer
+            @param batch_size:                 Size of random mini-batches to compute gradient for at each training step
+            @type l1:                          float
+            @param l1:                         Strength of l1 normalization for proximal gradient descent
+            @type l2:                          float
+            @param l2:                         Strength of l2 normalization for proximal gradient descent
+            @type verbose:                     integer
+            @param verbose:                    Indicates after how many training steps to print the current training loss
+            @type check_dir:                   string
+            @param check_dir:                  Sub-directory of log_dir to be used for checkpoint saving
+            @type validata_per_step:           integer
+            @param validate_per_step:          Indicates after how many training steps to evaluate classification performance on validation data
+            @type plot_loss_step:              integer
+            @param plot_loss_step:             Indicates after how many training steps to plot classification performance
+            @type plot_weights_step:           integer
+            @param plot_weights_step:          Indicates after how many training steps to plot weights of target layer
+            @type plot_weights_layer:          integer
+            @param plot_weights_layer:         Indicates for which layer to plot weights
+            @type plot_weights_shape:          List of ?
+            @param plot_weights_shape:         Indicates in which shape to bring weights before plotting them
+            @type plot_weights_bias:           boolean
+            @param plot_weights_bias:          If true, remove weight for bias before plotting weights
             
         """
         
@@ -328,9 +361,12 @@ class DeepNN:
             Function that evaluates classification error and performance on test data.
             
         :Input parameters:
-            data:           test data (array)
-            labels:         test labels (array)
-            normalize:      If true, normalize network activations before computing loss/prediction performance (boolean)
+            @type data:            array of ?
+            @param data:           test data
+            @type labels:          array of ?
+            @param labels:         test labels
+            @type normalize:       boolean
+            @param normalize:      If true, normalize network activations before computing loss/prediction performance
             
         """
         
@@ -367,8 +403,10 @@ class DeepNN:
             Creates plot of classification performance for training and validation data.
             
         :Input parameters:
-            plt_range:          Range of training steps for which to plot performance (list)
-            update:             Indicates, whether plot is to be updated or freshly created (boolean)
+            @type plt_range:           list of ?
+            @param plt_range:          Range of training steps for which to plot performance
+            @type update:               boolean
+            @param update:             Indicates, whether plot is to be updated or freshly created
             
         """
         
@@ -410,10 +448,14 @@ class DeepNN:
             Creates plot of the weights of a certain layer, with a certain shape.
             
         :Input parameters:
-            target_layer:       Indice of network layer, for which to plot weights (int)
-            new_shape:          New shape, which the weights are transformed into before plotting (list)
-            update:             Indicates, whether plot is to be updated or freshly created (boolean)
-            remove_bias:        If true, the bias weights will be removed before plotting (boolean)
+            @type target_layer:        integer
+            @param target_layer:       Indice of network layer, for which to plot weights
+            @type new_shape:           list of integers
+            @param new_shape:          New shape, which the weights are transformed into before plotting
+            @type update:              boolean
+            @param update:             Indicates, whether plot is to be updated or freshly created
+            @type remove_bias:         boolean
+            @param remove_bias:        If true, the bias weights will be removed before plotting
             
         """
         
