@@ -1,5 +1,5 @@
 """
-This class is used to run the SongClassifier with randomly generated
+This script is used to run the SongClassifier with randomly generated
 syllable sequences.
 """
 

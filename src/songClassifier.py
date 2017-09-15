@@ -20,11 +20,12 @@ class SongClassifier:
 
     def __init__(self, syllables, verbose = True):
         """
-        :Description: Initializes SongClassifier with a list of syllables
+        Initializes SongClassifier with a list of syllables
 
-        :Parameters:
-            1. syllables:    List including all possible syllables to draw from later on
-            2. verbose:      if False, all print outputs will be supressed
+        @type syllables:     List of strings
+        @param syllables:    List including all possible syllables to draw from later on
+        @type verbose:       boolean
+        @param verbose:      if False, all print outputs will be supressed
         """
 
         self.Sylls = syllables
@@ -34,17 +35,17 @@ class SongClassifier:
 
     def addSong(self, nSongSylls, sequenceReps = 1, song = None):
         """
-        :Description: Function that generates a deterministic song from the syllable list
+        Function that generates a deterministic song from the syllable list and
+        appends this song to self.Songs
         
-        :Parameters:
-            1. nSongSylls:     Number of syllables the song should consist of
-            2. sequenceReps:   How often we randomly draw nSongSylls syllables from the nSongSylls
+        @type nSongSylls:      integer
+        @param nSongSylls:     Number of syllables the song should consist of
+        @type sequenceReps:    integer
+        @param sequenceReps:   How often we randomly draw nSongSylls syllables from the nSongSylls
                                target syllables in order to create song (default = 1)
-            3. song:           List of strings representing syllables can be passed here, if None
-                               a random sequence is created (default = None)
-
-        :Returns:
-            1. song:           list of syllables that is appended to self.Songs
+        @type song:            List of strings
+        @param song:           List of strings representing syllables can be passed here, if None
+                               a random sequence is created (default = None)       
         """
 
         # check whether complete song was passed to method
@@ -61,20 +62,30 @@ class SongClassifier:
     def loadSongs(self, useSyllRecog = False, SyllPath = None, t_learn = 400, t_cadapt = 2000, t_wash = 200, t_recall = 200, 
                   maxTries = 5, RFCParams = {}, loadingParams = {}, dataPrepParams = {}, cLearningParams = {}):
         """
-        :Description: Function that loads all songs stored in the SongClassifier instance in a RFC
-        
-        :Parameters:
-            1.  useSyllRecog:    If True, run syllable recognition on stored patterns and use raw output for RFC training (default = False)
-            2.  SyllPath:        Needs to be directory to syllable data if useSyllRecog is True (default = None)
-            3.  t_learn:         number of timesteps used for feeding each pattern into the reservoir (default = 400)
-            4.  t_cadapt:        number of timesteps used for letting the autoconceptor adapt for each pattern (default = 2000)
-            5.  t_wash:          number of timesteps used for running the reservoir with input before learning period starts (default = 200)
-            6.  t_recall:        number of timesteps used for recalling each pattern by applying the conceptor on the reservoir (default = 200)
-            7.  maxTries:        maximum number of tries to load songs successfully into RFC (default = 5)
-            8.  RFCParams:       dictionary of keyword arguments to initilaze the RFC class with (defaults of RFC class will be used if not specified)
-            9.  loadingParams:   dictionary of keyword arguments to load the patterns into the RFC with (defaults of RFC class will be used if not specified)
-            10.  dataPrepParams:  dictionary of keyword arguments for data preprocessing if syllable recognition is to be used (defaults of preprocessing function will be used if not specified)
-            11. cLearningParams: dictionary of keyword arguments to learn a conceptor for each syllable if syllable recognition is to be used (defaults of syllable classifier will be used if not specified)
+        Function that loads all songs stored in the SongClassifier instance in a RFC
+
+        @type useSyllRecog:     boolean       
+        @param useSyllRecog:    If True, run syllable recognition on stored patterns and use raw output for RFC training (default = False)
+        @type SyllPath:         string
+        @param SyllPath:        Needs to be directory to syllable data if useSyllRecog is True (default = None)
+        @type t_learn:          integer
+        @param t_learn:         number of timesteps used for feeding each pattern into the reservoir (default = 400)
+        @type t_cadapt:         integer
+        @param t_cadapt:        number of timesteps used for letting the autoconceptor adapt for each pattern (default = 2000)
+        @type t_wash:           integer
+        @param t_wash:          number of timesteps used for running the reservoir with input before learning period starts (default = 200)
+        @type t_recall:         integer
+        @param t_recall:        number of timesteps used for recalling each pattern by applying the conceptor on the reservoir (default = 200)
+        @type maxTries:         integer
+        @param maxTries:        maximum number of tries to load songs successfully into RFC (default = 5)
+        @type RFCParams:        dictionary
+        @param RFCParams:       dictionary of keyword arguments to initilaze the RFC class with (defaults of RFC class will be used if not specified)
+        @type loadingParams:    dictionary
+        @param loadingParams:   dictionary of keyword arguments to load the patterns into the RFC with (defaults of RFC class will be used if not specified)
+        @type dataPrepParams:   dictionary
+        @param dataPrepParams:  dictionary of keyword arguments for data preprocessing if syllable recognition is to be used (defaults of preprocessing function will be used if not specified)
+        @type cLeanringParams:  dictionary
+        @param cLearningParams: dictionary of keyword arguments to learn a conceptor for each syllable if syllable recognition is to be used (defaults of syllable classifier will be used if not specified)
 
         """
 
@@ -132,23 +143,32 @@ class SongClassifier:
     def runSyllableClassification(self, SyllPath = None, nTrain = 50, nTest = 20, cType = 2, useStoredPatts = True, 
                                   useRawOutput = True, pattTimesteps = None, maxPauseLength = 3, dataPrepParams = {}, cLearningParams = {}):
         """
-        :Description: Function that learns conceptors for each syllable in self.Songs and
-                      tries to classify the sequence of syllable generated from repeating the songs several times
+        Function that learns conceptors for each syllable in self.Songs and
+        tries to classify the sequence of syllable generated from repeating the songs several times
         
-        :Parameters:
-            1. SyllPath:            If useSyllRecog = True, this needs to be the full directory to the folder including the syllable data (default = None)
-            2. nTrain:              number of training samples to be used for each syllable (default = 50)
-            3. nTest:               number of test samples to be used for each syllable (default = 10)
-            4. cType:               index that indicates from which conceptor to use the recognition results {0 = pos, 1 = neg, 2 = combined} (default = 2)
-            5. useStoredPatts:      if True, run syllable classification on self.patterns, else create new sequence according to repetition times in pattTimesteps (default = True)              
-            6. useRawOutput:        if True, store evidences from chosen conceptore as patterns. If False, apply winner-takes-it-all classification on evidences (default = True)       
-            7. pattTimesteps:       list of scalars representing the lengths each song in self.Songs should be presented at test time (only necessary if useStoredPatts is False)
-            8. maxPauseLength:      Maximal length of pauses to be added randomly after each song (default = 3)            
-            8. dataPrepParams:      dictionary of keyword arguments for data preprocessing if syllable recognition is to be used (defaults of preprocessing function will be used if not specified)
-            9. cLearningParams:     dictionary of keyword arguments to learn a conceptor for each syllable if syllable recognition is to be used (defaults of syllable classifier will be used if not specified)
+        @type SyllPath:             string
+        @param SyllPath:            If useSyllRecog = True, this needs to be the full directory to the folder including the syllable data (default = None)
+        @type nTrain:               integer
+        @param nTrain:              number of training samples to be used for each syllable (default = 50)
+        @type nTest:                integer
+        @param nTest:               number of test samples to be used for each syllable (default = 10)
+        @type cType:                integer
+        @param cType:               index that indicates from which conceptor to use the recognition results {0 = pos, 1 = neg, 2 = combined} (default = 2)
+        @type useStoredPatts:       boolean
+        @param useStoredPatts:      if True, run syllable classification on self.patterns, else create new sequence according to repetition times in pattTimesteps (default = True)              
+        @type useRawOutput:         boolean
+        @param useRawOutput:        if True, store evidences from chosen conceptore as patterns. If False, apply winner-takes-it-all classification on evidences (default = True)       
+        @type pattTimesteps:        List of ? (floats, integers, doubles...)
+        @param pattTimesteps:       list of scalars representing the lengths each song in self.Songs should be presented at test time (only necessary if useStoredPatts is False)
+        @type maxPauseLength:       integer
+        @param maxPauseLength:      Maximal length of pauses to be added randomly after each song (default = 3)  
+        @type dataPrepParams:       dictionary          
+        @param dataPrepParams:      dictionary of keyword arguments for data preprocessing if syllable recognition is to be used (defaults of preprocessing function will be used if not specified)
+        @type cLearningParams:      dictionary
+        @param cLearningParams:     dictionary of keyword arguments to learn a conceptor for each syllable if syllable recognition is to be used (defaults of syllable classifier will be used if not specified)
         
-        :Returns: 
-            1. newPatts:            List of patterns with recognition evidences for each syllable played
+        @rtype newPatts:            List of ?
+        @return newPatts:           List of patterns with recognition evidences for each syllable played
         """
         
         if self.verbose: print('Running syllable recognition...')
@@ -222,21 +242,26 @@ class SongClassifier:
     def run(self, patterns = None, nLayers = 3, pattRepRange = (2,20), maxPauseLength = 3, useSyllRecog = False, SyllPath = None,
             dataPrepParams = {}, cLearningParams = {}, HFCParams = {}):
         """
-        :Description: Function that uses an HFC to recognize which of the songs loaded in self.R is currently
-                      used as input to the HFC.
+        Function that uses an HFC to recognize which of the songs loaded in self.R is currently
+        used as input to the HFC.
         
-        :Parameters: 
-            1. patterns:        list with entries for each song, consisting of an m by n array,
+        @type patterns:         list of ?
+        @param patterns:        list with entries for each song, consisting of an m by n array,
                                 with m = number of syllables the pattern is played and n = number of
                                 syllables of the Classifier. If None, stored patterns are used (default = None)
-            2. nLayers:         Number of layers the HFC should consist of (default = 3)
-            3. pattRepRange:    tuple including the lower and upper bound of the uniform distribution
+        @type nLayers:          integer
+        @param nLayers:         Number of layers the HFC should consist of (default = 3)
+        @type pattRepRange:     ?
+        @param pattRepRange:    tuple including the lower and upper bound of the uniform distribution
                                 from which the number of repetitions of each song are drawn (default = (2,20))
-            4. maxPauseLength:  Maximum number of 'zero' syllables to be added after a song ended (default = 3)
-            5. useSyllRecog:    If True, train a syllableClassifier on all syllables stored in the songClassifier
+        @type maxPauseLength:   integer
+        @param maxPauseLength:  Maximum number of 'zero' syllables to be added after a song ended (default = 3)
+        @type useSyllRecog:     boolean
+        @param useSyllRecog:    If True, train a syllableClassifier on all syllables stored in the songClassifier
                                 and run classification on the stored patterns afterwards. The resulting evidences
                                 will then be used to run the HFC (default = False)
-            6. SyllPath:        If useSyllRecog = True, this needs to be the full path to the folder including
+        @type SyllPath:         string
+        @param SyllPath:        If useSyllRecog = True, this needs to be the full path to the folder including
                                 the syllable data (default = None)
         """
 
